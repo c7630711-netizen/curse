@@ -1,0 +1,49 @@
+<div class="app-shell">
+  <aside class="sidebar">
+    <a class="brand" routerLink="/" aria-label="דף הבית"><b>💞</b><span>שידוכים שלי</span></a>
+    <nav>
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><span>🏠</span> דשבורד</a>
+      <a routerLink="/proposals" routerLinkActive="active"><span>💞</span> הצעות שידוך</a>
+      <a routerLink="/boys" routerLinkActive="active"><span>👨</span> בחורים</a>
+      <a routerLink="/girls" routerLinkActive="active"><span>👩</span> בחורות</a>
+    </nav>
+  </aside>
+  <main><router-outlet /></main>
+
+  @if (chatOpen()) {
+    <section class="chat-window" aria-label="צ'אט עם העוזר">
+      <header class="chat-header">
+        <div>
+          <b>🤖 העוזר האישי</b>
+          <small>מחובר ל-Gemini</small>
+        </div>
+        <button type="button" class="chat-close" (click)="toggleChat()" aria-label="סגור צ'אט">×</button>
+      </header>
+
+      <div class="chat-messages" aria-live="polite">
+        @for (message of messages(); track $index) {
+          <div class="chat-message" [class.user]="message.role === 'user'">
+            {{ message.text }}
+          </div>
+        }
+        @if (loading()) {
+          <div class="chat-message typing">חושב...</div>
+        }
+      </div>
+
+      <form class="chat-form" (ngSubmit)="sendMessage()">
+        <input
+          [(ngModel)]="chatInput"
+          name="chatInput"
+          placeholder="כתבו הודעה..."
+          autocomplete="off"
+          [disabled]="loading()" />
+        <button type="submit" [disabled]="loading()" aria-label="שליחה">➤</button>
+      </form>
+    </section>
+  }
+
+  <button type="button" class="chat-button" (click)="toggleChat()" [attr.aria-label]="chatOpen() ? 'סגור צ׳אט' : 'פתח צ׳אט'" [class.open]="chatOpen()">
+    {{ chatOpen() ? '×' : '💬' }}
+  </button>
+</div>

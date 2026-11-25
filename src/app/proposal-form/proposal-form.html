@@ -1,0 +1,59 @@
+<div class="page-head">
+  <div><h1>{{editingId ? 'עריכת הצעה' : 'הוספת הצעת שידוך'}}</h1><p class="sub">בחירת מועמדים ופרטי ההצעה</p></div>
+</div>
+
+<div class="card">
+  <div class="grid two">
+    <div>
+      <h2>👨 בחור</h2>
+      <label for="boy-name">שם הבחור</label>
+      <input id="boy-name" [(ngModel)]="boyName" name="boyName" list="boy-options" placeholder="בחרי או הקלידי שם">
+      <datalist id="boy-options">
+        @for (boy of activeBoys(); track boy.id) { <option [value]="boy.name"></option> }
+      </datalist>
+      <p class="sub">שם חדש יתווסף למאגר עם שמירת ההצעה.</p>
+      <button class="btn secondary" style="margin-top:10px" type="button" (click)="showBoyForm=!showBoyForm">+ הוספת בחור חדש</button>
+      @if (showBoyForm) {
+        <div class="card" style="margin-top:12px">
+          <label>שם</label><input [(ngModel)]="newBoyName">
+          <label style="margin-top:10px">טלפון (לא חובה)</label><input [(ngModel)]="newBoyPhone" dir="ltr" type="tel">
+          <label style="margin-top:10px">הערות</label><textarea [(ngModel)]="newBoyNotes"></textarea>
+          <button class="btn" style="margin-top:10px" type="button" (click)="addPerson('boy')">שמירת בחור</button>
+        </div>
+      }
+    </div>
+
+    <div>
+      <h2>👩 בחורה</h2>
+      <label for="girl-name">שם הבחורה</label>
+      <input id="girl-name" [(ngModel)]="girlName" name="girlName" list="girl-options" placeholder="בחרי או הקלידי שם">
+      <datalist id="girl-options">
+        @for (girl of activeGirls(); track girl.id) { <option [value]="girl.name"></option> }
+      </datalist>
+      <p class="sub">שם חדש יתווסף למאגר עם שמירת ההצעה.</p>
+      <button class="btn secondary" style="margin-top:10px" type="button" (click)="showGirlForm=!showGirlForm">+ הוספת בחורה חדשה</button>
+      @if (showGirlForm) {
+        <div class="card" style="margin-top:12px">
+          <label>שם</label><input [(ngModel)]="newGirlName">
+          <label style="margin-top:10px">טלפון (לא חובה)</label><input [(ngModel)]="newGirlPhone" dir="ltr" type="tel">
+          <label style="margin-top:10px">הערות</label><textarea [(ngModel)]="newGirlNotes"></textarea>
+          <button class="btn" style="margin-top:10px" type="button" (click)="addPerson('girl')">שמירת בחורה</button>
+        </div>
+      }
+    </div>
+  </div>
+
+  <h2 style="margin-top:28px">פרטי ההצעה</h2>
+  <div class="grid two">
+    <div><label>סטטוס</label><select [(ngModel)]="status">
+      @for (item of statuses; track $index) { <option [ngValue]="$index">{{item.icon}} {{item.label}}</option> }
+    </select></div>
+    @if (status === 7) { <div><label>סיבת סיום</label><input [(ngModel)]="endReason" placeholder="סיבת סיום"></div> }
+  </div>
+  <label style="margin-top:14px">הערות להצעה</label><textarea [(ngModel)]="notes"></textarea>
+  @if (error) { <div class="error">{{error}}</div> }
+  <div class="actions" style="margin-top:18px">
+    <button class="btn" type="button" (click)="save()">שמירת הצעה</button>
+    <a class="btn secondary" routerLink="/proposals">ביטול</a>
+  </div>
+</div>

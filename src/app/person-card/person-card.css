@@ -1,0 +1,30 @@
+.person-proposals {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.person-proposals h3 {
+  margin: 0 0 8px;
+  font-size: 17px;
+}
+
+.person-proposal {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.person-proposal:last-of-type {
+  border-bottom: 0;
+}
+
+.person-proposal a {
+  margin-inline-start: auto;
+  color: #5664c9;
+  font-weight: 700;
+  text-decoration: none;
+}

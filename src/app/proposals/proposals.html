@@ -1,0 +1,37 @@
+<div class="page-head">
+  <div><h1>הצעות שידוך</h1><p class="sub">חיפוש וסינון כל ההצעות</p></div>
+  <a class="btn" routerLink="/proposals/new">+ הוספת הצעה</a>
+</div>
+
+<div class="card" style="margin-bottom:20px">
+  <div class="grid four">
+    <div><label>שם בחור</label><input [(ngModel)]="boyQuery" placeholder="חיפוש"></div>
+    <div><label>שם בחורה</label><input [(ngModel)]="girlQuery" placeholder="חיפוש"></div>
+    <div><label>סטטוס</label><select [(ngModel)]="statusFilter">
+      <option [ngValue]="-1">כל הסטטוסים</option>
+      @for (status of statuses; track $index) { <option [ngValue]="$index">{{status.label}}</option> }
+    </select></div>
+  </div>
+</div>
+
+<div class="card">
+  @if (filtered().length) {
+    <table>
+      <thead><tr><th>בחור</th><th>בחורה</th><th>סטטוס</th><th>הערות</th><th>פעולות</th></tr></thead>
+      <tbody>
+        @for (proposal of filtered(); track proposal.id) {
+          <tr>
+            <td>{{data.boy(proposal.boyId)?.name}} @if (!data.boy(proposal.boyId)?.active) {<span class="status" style="background:#eee">מחוק</span>}</td>
+            <td>{{data.girl(proposal.girlId)?.name}} @if (!data.girl(proposal.girlId)?.active) {<span class="status" style="background:#eee">מחוקה</span>}</td>
+            <td><span class="status" [style.color]="statuses[proposal.status].color" [style.background]="statuses[proposal.status].color + '18'">{{statuses[proposal.status].icon}} {{statuses[proposal.status].label}}</span></td>
+            <td>{{proposal.notes}}</td>
+            <td class="actions">
+              <a class="btn secondary" [routerLink]="['/proposals',proposal.id,'edit']">עריכה</a>
+              <button class="btn danger" (click)="deleteProposal(proposal.id)">מחיקה</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  } @else { <div style="text-align:center;padding:30px"><h2>לא נמצאו הצעות</h2></div> }
+</div>

@@ -1,0 +1,27 @@
+@if (person) {
+  <div class="page-head">
+    <div><h1>{{person.name}}</h1><p class="sub">{{person.phone || 'לא הוזן מספר טלפון'}}</p></div>
+    <a class="btn secondary" [routerLink]="kind === 'boy' ? '/boys' : '/girls'">חזרה למאגר</a>
+  </div>
+
+  <div class="card" style="margin-bottom:20px">
+    <h2>פרטי המועמד</h2>
+    <p><b>טלפון:</b> {{person.phone || 'לא הוזן'}}</p>
+    <p><b>הערות:</b> {{person.notes || 'אין הערות'}}</p>
+
+    <section class="person-proposals">
+      <h3>מועמדים שהוצעו</h3>
+      @for (proposal of proposals(); track proposal.id) {
+        <div class="person-proposal">
+          <b>{{kind === 'boy' ? data.girl(proposal.girlId)?.name : data.boy(proposal.boyId)?.name}}</b>
+          <span class="status" [style.color]="statuses[proposal.status].color" [style.background]="statuses[proposal.status].color + '18'">{{statuses[proposal.status].label}}</span>
+          <a [routerLink]="['/proposals',proposal.id,'edit']">פתיחת ההצעה</a>
+        </div>
+      } @empty {
+        <p class="sub">עדיין לא הוצעו מועמדים</p>
+      }
+    </section>
+  </div>
+} @else {
+  <div class="card"><h2>המועמד לא נמצא</h2><a class="btn" [routerLink]="kind === 'boy' ? '/boys' : '/girls'">חזרה למאגר</a></div>
+}

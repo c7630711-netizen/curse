@@ -1,0 +1,47 @@
+<div class="page-head">
+  <div><h1>{{kind === 'boy' ? 'מאגר בחורים' : 'מאגר בחורות'}}</h1><p class="sub">{{list().length}} מועמדים פעילים</p></div>
+  <button class="btn" type="button" (click)="add()">+ הוספת {{kind === 'boy' ? 'בחור' : 'בחורה'}}</button>
+</div>
+
+@if (editing) {
+  <div class="card" style="margin-bottom:20px">
+    <h2>{{editing.id ? 'עריכת מועמד' : 'מועמד חדש'}}</h2>
+    <div class="grid three" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+      <div><label>שם</label><input [(ngModel)]="personName"></div>
+      <div><label>טלפון (לא חובה)</label><input [(ngModel)]="personPhone" dir="ltr" type="tel"></div>
+      <div><label>הערות</label><input [(ngModel)]="personNotes"></div>
+    </div>
+    <div class="actions" style="margin-top:14px">
+      <button class="btn" type="button" (click)="editing.id ? saveEdit() : saveNew()">שמירה</button>
+      <button class="btn secondary" type="button" (click)="editing=null">ביטול</button>
+    </div>
+  </div>
+}
+
+<div class="card" style="margin-bottom:20px"><label>חיפוש</label><input [(ngModel)]="query" placeholder="חיפוש לפי שם"></div>
+<div class="grid two">
+  @for (person of list(); track person.id) {
+    <div class="card">
+      <h2>{{person.name}}</h2>
+      <p class="sub">{{person.phone || 'לא הוזן מספר טלפון'}}</p>
+      <p>{{person.notes || 'אין הערות'}}</p>
+      <section class="candidate-proposals">
+        <h3>מועמדים שהוצעו</h3>
+        @for (proposal of proposalsFor(person); track proposal.id) {
+          <div class="candidate-proposal">
+            <b>{{proposedName(proposal) || 'מועמד לא נמצא'}}</b>
+            <span class="status" [style.color]="statuses[proposal.status].color" [style.background]="statuses[proposal.status].color + '18'">{{statuses[proposal.status].label}}</span>
+            <a [routerLink]="['/proposals',proposal.id,'edit']">פתיחה</a>
+          </div>
+        } @empty {
+          <p class="sub">אין הצעות עדיין</p>
+        }
+      </section>
+      <div class="actions">
+        <a class="btn secondary" [routerLink]="['/',kind,person.id]">כרטיס מועמד</a>
+        <button class="btn secondary" type="button" (click)="openEdit(person)">עריכה</button>
+        <button class="btn danger" type="button" (click)="deletePerson(person.id)">מחיקה</button>
+      </div>
+    </div>
+  } @empty { <div class="card">לא נמצאו מועמדים</div> }
+</div>

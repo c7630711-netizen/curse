@@ -1,0 +1,28 @@
+<div class="page-head">
+  <div><h1>שלום וברוכה הבאה 👋</h1><p class="sub">תמונת מצב של הצעות השידוך שלך</p></div>
+  <a class="btn" routerLink="/proposals/new">+ הצעת שידוך חדשה</a>
+</div>
+
+<div class="dashboard-featured">
+  @for (statusIndex of [0, 4, 6]; track statusIndex) {
+    @let status = statuses[statusIndex];
+    <a class="card dashboard-card featured" [routerLink]="['/proposals']" [queryParams]="{status:statusIndex}"
+       [style.borderTop]="'4px solid ' + status.color">
+      <div class="status-icon">{{status.icon}}</div>
+      <b class="status-count">{{count(statusIndex)}}</b>
+      <span class="sub">{{status.label}}</span>
+    </a>
+  }
+</div>
+
+<div class="dashboard-secondary">
+  @for (statusIndex of [1, 2, 3, 5, 7]; track statusIndex) {
+    @let status = statuses[statusIndex];
+    <a class="card dashboard-card secondary" [routerLink]="['/proposals']" [queryParams]="{status:statusIndex}"
+       [style.borderTop]="'4px solid ' + status.color">
+      <div class="status-icon">{{status.icon}}</div>
+      <b class="status-count">{{count(statusIndex)}}</b>
+      <span class="sub">{{status.label}}</span>
+    </a>
+  }
+</div>
